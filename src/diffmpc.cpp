@@ -93,13 +93,7 @@ std::tuple<double, double> diffMpcController::mpc_solve(vector<double>& cx, vect
     Eigen::Vector3d x_r(cx[min_index], cy[min_index], yaw_r);
     // std::cout << "x_r = " << x_r << std::endl;
     kesi.head(NX) = inital_x - x_r;
-    // std::cout << "initial_x = " << std::endl;
-    // std::cout << inital_x << std::endl;
-    // std::cout << " kesi.head = " << std::endl;
-    // std::cout << kesi.head(NX) << std::endl;
     kesi.tail(NU) = U;                          // U为初始控制量
-    // std::cout << "kesi.tail(NU) = " << std::endl;
-    // std::cout << kesi.tail(NU) << std::endl;
 
     Eigen::MatrixXd A_3 = Eigen::MatrixXd::Zero(NX + NU, NX + NU);              // A矩阵为A3矩阵
     A_3.topLeftCorner(NX, NX) = Ad;
@@ -243,20 +237,11 @@ std::tuple<double, double> diffMpcController::mpc_solve(vector<double>& cx, vect
     Eigen::VectorXd solution = solver.getSolution();
     // 更新控制量U
     Eigen::VectorXd delta_U = solution.head(U.size());
-    //std::cout << "delta_U = " << delta_U << std::endl;
     U += delta_U;
-    //std::cout << "U = " << U << std::endl;
 
     // 计算实际的控制量
-    // double v_real = U(0) + v_r + kesi(3);
     double v_real = U(0) + v_r;
-    // std::cout << "V_r = " << v_r << "  u(0) = " << U(0) << std::endl;
-    //double delta_real = U(1) + delta_f_r + kesi(4);
     double delta_real = U(1);
-    // std::cout << "参考转角 = " << delta_f_r << std::endl;
-    // std::cout << "计算转角 = " << delta_real << std::endl;
-    // cout << "v_real = " << v_real
-    //     << "delta_real = " << delta_real << endl;
 
     return std::make_tuple(v_real, delta_real);
 }
@@ -270,8 +255,9 @@ void KinematicModel_MPC::updatestate(double accel, double delta_f){
     // 转弯半径
     double R = accel / omega;
     // 计算左右轮速度
-    double v_left = omega * (R + L/2);
-    double v_right = omega * (R - L/2);
+    double v_left = omega * (R - L/2);
+    double v_right = omega * (R + L/2);
+    std::cout << "左轮轮速 = " << v_left << "   右轮轮速 = " << v_right << std::endl;
     // 更新状态
     x += (accel / omega) * (sin(yaw + omega * dt) - sin(yaw));
     y += (accel / omega) * (-cos(yaw + omega * dt) + cos(yaw));

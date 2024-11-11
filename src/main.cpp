@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
         // std::cout << "最近点索引：" << min_index << " 误差：" << min_e << std::endl;
         // 计算MPC控制
         auto [v_real, omega] = mpc.mpc_solve(r_x, r_y, ryaw, rcurvature, speed_profile, initial_x, min_index, min_e, agv, param);
-        std::cout << "求解速度:" << v_real << " 求解角速度：" << omega << std::endl;
+        // std::cout << "求解速度:" << v_real << " 求解角速度：" << omega << std::endl;
         // 更新agv状态
         agv.updatestate(v_real, omega);
         // 获取agv状态
