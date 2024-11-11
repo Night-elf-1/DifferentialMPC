@@ -11,7 +11,7 @@ static inline bool finish = true;
 struct parameters {
     int L = 3.0;
     int NX = 3, NU = 2, NP = 60, NC = 5;
-    double dt = 0.5, row = 10;
+    double dt = 0.2, row = 10;
 };
 
 class KinematicModel_MPC{

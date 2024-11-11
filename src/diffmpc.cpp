@@ -5,7 +5,7 @@ std::vector<double> diffMpcController::calculateReferenceSpeeds(const std::vecto
     // double max_speed = 2.0; // 最大速度设为2.0 m/s
     for (double k : curvatures) {
         // 假设曲率半径与速度成线性关系，曲率越大，速度越低
-        double speed = max_speed * (1 - 2.5*k); // 假设最大曲率对应于2π的曲率半径
+        double speed = max_speed * (1 - 3*k); // 假设最大曲率对应于2π的曲率半径
         speed = std::max(1.0, std::min(max_speed, speed)); // 限制速度在0到max_speed之间
         referenceSpeeds.push_back(speed);
     }
@@ -247,17 +247,13 @@ std::tuple<double, double> diffMpcController::mpc_solve(vector<double>& cx, vect
 }
 
 void KinematicModel_MPC::updatestate(double accel, double delta_f){
-    // 计算转弯半径
-    // double R = L / (2*tan(delta_f));
-    // 计算角速度 omega
-    // double omega = accel / R;
     double omega = delta_f;
     // 转弯半径
     double R = accel / omega;
     // 计算左右轮速度
     double v_left = omega * (R - L/2);
     double v_right = omega * (R + L/2);
-    std::cout << "左轮轮速 = " << v_left << "   右轮轮速 = " << v_right << std::endl;
+    // std::cout << "左轮轮速 = " << v_left << "   右轮轮速 = " << v_right << std::endl;
     // 更新状态
     x += (accel / omega) * (sin(yaw + omega * dt) - sin(yaw));
     y += (accel / omega) * (-cos(yaw + omega * dt) + cos(yaw));
