@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
     Eigen::Vector3d initial_x;
     initial_x << 10.0, 5.0, 0.1;
     // 初始化agv运动学模型状态
-    KinematicModel_MPC agv(initial_x(0), initial_x(1), initial_x(2), target_speed, param.L, 0.1);
+    KinematicModel_MPC agv(initial_x(0), initial_x(1), initial_x(2), target_speed, param.L, 0.5);
     // 创建agv历史点容器
     std::vector<double> x_history, y_history;
 

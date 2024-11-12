@@ -253,11 +253,35 @@ void KinematicModel_MPC::updatestate(double accel, double delta_f){
     // 计算左右轮速度
     double v_left = omega * (R - L/2);
     double v_right = omega * (R + L/2);
-    // std::cout << "左轮轮速 = " << v_left << "   右轮轮速 = " << v_right << std::endl;
+
     // 更新状态
     x += (accel / omega) * (sin(yaw + omega * dt) - sin(yaw));
     y += (accel / omega) * (-cos(yaw + omega * dt) + cos(yaw));
     yaw += omega * dt;
+
+    // 轮子坐标
+    const double wheel1_x = -1.5;
+    const double wheel1_y = 0.03;
+    const double wheel2_x = -0.9;
+    const double wheel2_y = -0.03;
+    const double wheel3_x = 0.9;
+    const double wheel3_y = 0.03;
+    const double wheel4_x = 1.5;
+    const double wheel4_y = -0.03;
+    const double wheel_base = 3.5;  // 两轮差速模型轮距
+
+    // 计算速度差
+    double v_diff = v_left - v_right;  // 左右轮速度差
+    // 根据x坐标位置线性插值计算速度
+    // 将整个轮距范围[-1.5, 1.5]映射到速度范围[v_left, v_right]
+    double speed_slope = v_diff / wheel_base;  // 速度变化率
+    // 从左到右依次计算每个轮子的速度
+    double v1 = accel + speed_slope * (-wheel1_x);  // 最左轮
+    double v2 = accel + speed_slope * (-wheel2_x);  // 左中轮
+    double v3 = accel + speed_slope * (-wheel3_x);  // 右中轮
+    double v4 = accel + speed_slope * (-wheel4_x);  // 最右轮
+
+    std::cout << "v1 = " << v1 << "   v2 = " << -v2 << "   v3 = " << v3 << "   v4 = " << -v4 << std::endl;
 
     // if (abs(delta_f < 0.0001)) {
     //     x += accel * cos(yaw) * dt;
