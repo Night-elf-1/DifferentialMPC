@@ -2,7 +2,8 @@
 
 ## 效果图：
 
-![wechat_2024-12-16_140950_288](/home/hamster/wechat_2024-12-16_140950_288.png)
+![differentialMPC](https://github.com/user-attachments/assets/65074526-010a-4f45-bfa9-644782c42875)
+
 
 **差速运动学模型理论参考：**https://blog.csdn.net/weixin_43879302/article/details/105880972
 
